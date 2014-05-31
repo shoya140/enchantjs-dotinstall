@@ -10,32 +10,30 @@ window.onload = function(){
     bear.image = core.assets['chara1.png'];
     bear.x = 0;
     bear.y = 0;
-    bear.frame = 1;
+    this.frame = 1;
 
     position_x = 0;
     position_y = 0;
 
-    var enemy = new Sprite(32, 32);
-    enemy.image = core.assets['chara1.png'];
-    enemy.x = 80;
-    enemy.y = 0;
-    enemy.frame = 0;
-
     bear.addEventListener('enterframe', function(){
-      if (core.input.right) this.x += 5;
       if (core.input.left) this.x -= 5;
+      if (core.input.right) this.x += 5;
+      if (core.input.up) this.y -= 5;
+      if (core.input.down) this.y += 5;
 
-
-      // intersect
-
-      if (this.intersect(enemy)){
-        label.text = 'hit';
+      if (position_x > this.x + 2){
+        this.x += 5;
+        this.frame = this.age % 3;
+      }else if(position_x < this.x - 2){
+        this.x -= 5;
+        this.frame = this.age % 3;
       }
-      // within
-      if (this.within(enemy, 10)){
-        label.text = 'hit!!';
-        core.pushScene(gameOverScene);
-        core.stop();
+      if (position_y > this.y + 2){
+        this.y += 5;
+        this.frame = this.age % 3;
+      }else if(position_y < this.y - 2){
+        this.y -= 5;
+        this.frame = this.age % 3;
       }
 
     });
@@ -49,9 +47,6 @@ window.onload = function(){
       position_y = e.y;
     });
 
-    var gameOverScene = new Scene();
-    gameOverScene.backgroundColor = 'black'
-
 
     var label = new Label();
     label.x = 200;
@@ -59,9 +54,11 @@ window.onload = function(){
     label.color = 'red';
     label.font = '14px "Arial"';
     label.text = '0';
+    label.on('enterframe', function(){
+      label.text = (core.frame/core.fps).toFixed(2);
+    });
 
     core.rootScene.addChild(bear);
-    core.rootScene.addChild(enemy);
     core.rootScene.addChild(label);
   };
   core.start();
