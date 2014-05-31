@@ -15,6 +15,10 @@ window.onload = function(){
         this.frame = rand(5);
         this.opacity = rand(100) / 100;
         this.image = core.assets['chara1.png'];
+
+        this.tl.moveBy(rand(100), 0,  40, enchant.Easing.BOUNCE_EASEOUT).
+        moveBy(-rand(100), 0,  40, enchant.Easing.BOUNCE_EASEOUT);
+
         this.on('enterframe', function(){
           this.rotate(rand(10));
         });
